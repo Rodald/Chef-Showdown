@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="jar" build-on-make="true" name="Chef_Showdown:jar">
+    <output-path>$PROJECT_DIR$/../../../Server/LocalHost/1.20.6 Paper/plugins</output-path>
+    <root id="archive" name="Chef_Showdown.jar">
+      <element id="module-output" name="Chef_Showdown" />
+    </root>
+  </artifact>
+</component>
