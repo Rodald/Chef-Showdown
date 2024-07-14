@@ -21,6 +21,7 @@ public class Interactions implements Listener {
     public final static Material BURGER = Material.BAMBOO_TRAPDOOR;
     public final static Material SALAD = Material.WARPED_TRAPDOOR;
     public final static Material DRINK_DISPENSER = Material.BROWN_STAINED_GLASS;
+    public final static Material TRASH_CAN = Material.CAULDRON;
 
     public static boolean isMainSlotEmpty(Player player) {
         return player.getInventory().getItemInMainHand().getType() == Material.AIR;
@@ -49,11 +50,15 @@ public class Interactions implements Listener {
                 } else if (clickedBlockType == GRILL_BURNED_MEAT) {
                     Grill.takeBurnedMeat(player, clickedBlock);
                 } else if (clickedBlockType == BURGER) {
+                    BreadBoard.givePlayerBread(player);
                     event.setCancelled(true);
                 } else if (clickedBlockType == SALAD) {
+                    SaladBoard.givePlayerSalad(player);
                     event.setCancelled(true);
                 } else if (clickedBlockType == DRINK_DISPENSER) {
 
+                } else if (clickedBlockType == TRASH_CAN) {
+                    TrashCan.deleteItem(player);
                 }
 
             }
