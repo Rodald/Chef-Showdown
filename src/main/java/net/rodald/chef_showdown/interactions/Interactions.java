@@ -7,6 +7,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
 
 public class Interactions implements Listener {
@@ -29,6 +30,9 @@ public class Interactions implements Listener {
 
     @EventHandler
     public void onPlayerInteract(PlayerInteractEvent event) {
+
+        if(event.getHand() != EquipmentSlot.HAND) return;
+
         // Check if the action is right-clicking a block
         if (event.getAction() == Action.RIGHT_CLICK_BLOCK) {
             // Check if the clicked block is of a specific type
@@ -37,11 +41,14 @@ public class Interactions implements Listener {
                 Material clickedBlockType = event.getClickedBlock().getType();
                 Block clickedBlock = event.getClickedBlock();
                 if (clickedBlockType == TABLET) {
-
+                    Tablet.swapItem(player, clickedBlock);
+                    event.setCancelled(true);
                 } else if (clickedBlockType == MEAT) {
                     MeatBoard.givePlayerMeat(player);
+                    player.sendMessage("meat");
                     event.setCancelled(true);
                 } else if (clickedBlockType == GRILL) {
+                    player.sendMessage("grill");
                     Grill.placeMeat(player, clickedBlock);
                 } else if (clickedBlockType == GRILL_RAW_MEAT) {
 
@@ -59,6 +66,7 @@ public class Interactions implements Listener {
 
                 } else if (clickedBlockType == TRASH_CAN) {
                     TrashCan.deleteItem(player);
+                    event.setCancelled(true);
                 }
 
             }
