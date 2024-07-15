@@ -17,24 +17,24 @@ public class DeepFryer {
         this.plugin = plugin;
     }
 
-    public static void startFries(Player player, Block grill) {
+    public static void startFries(Player player, Block deepFryer) {
         if (player.getInventory().getItemInMainHand().getType() == Material.BEEF) {
             player.getInventory().setItemInMainHand(new ItemStack(Material.AIR));
-            grill.setType(Material.PURPUR_SLAB);
+            deepFryer.setType(Material.RED_STAINED_GLASS);
 
             // Start the cooking timer
             new BukkitRunnable() {
                 @Override
                 public void run() {
-                    if (grill.getType() == Material.PURPUR_SLAB) {
-                        grill.setType(Material.MUD_BRICK_SLAB);
+                    if (deepFryer.getType() == Material.PURPUR_SLAB) {
+                        deepFryer.setType(Material.ORANGE_STAINED_GLASS);
 
                         // Start the burning timer
                         new BukkitRunnable() {
                             @Override
                             public void run() {
-                                if (grill.getType() == Material.MUD_BRICK_SLAB) {
-                                    grill.setType(Material.BLACKSTONE_SLAB);
+                                if (deepFryer.getType() == Material.MUD_BRICK_SLAB) {
+                                    deepFryer.setType(Material.BLACK_STAINED_GLASS);
                                 }
                             }
                         }.runTaskLater(plugin, BURNING_TIME);
@@ -44,17 +44,17 @@ public class DeepFryer {
         }
     }
 
-    public static void takeFries(Player player, Block grill) {
+    public static void takeFries(Player player, Block deepFryer) {
         if (Interactions.isMainSlotEmpty(player)) {
             player.getInventory().setItemInMainHand(new ItemStack(Material.BAKED_POTATO));
-            grill.setType(Material.POLISHED_DEEPSLATE_SLAB);
+            deepFryer.setType(Material.YELLOW_STAINED_GLASS);
         }
     }
 
-    public static void takeBurnedFries(Player player, Block grill) {
+    public static void takeBurnedFries(Player player, Block deepFryer) {
         if (Interactions.isMainSlotEmpty(player)) {
             player.getInventory().setItemInMainHand(new ItemStack(Material.POISONOUS_POTATO));
-            grill.setType(Material.POLISHED_DEEPSLATE_SLAB);
+            deepFryer.setType(Material.YELLOW_STAINED_GLASS);
         }
     }
 }
