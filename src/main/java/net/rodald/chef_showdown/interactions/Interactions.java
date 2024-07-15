@@ -19,6 +19,11 @@ public class Interactions implements Listener {
     public final static Material GRILL_COOKED_MEAT = Material.MUD_BRICK_SLAB;
     public final static Material GRILL_BURNED_MEAT = Material.BLACKSTONE_SLAB;
 
+    public final static Material DEEP_FRYER = Material.YELLOW_STAINED_GLASS;
+    public final static Material FRYING_DEEP_FRYER = Material.RED_STAINED_GLASS;
+    public final static Material FINISHED_DEEP_FRYER = Material.ORANGE_STAINED_GLASS;
+    public final static Material BURNED_DEEP_FRYER = Material.BLACK_STAINED_GLASS;
+
     public final static Material BURGER = Material.BAMBOO_TRAPDOOR;
     public final static Material SALAD = Material.WARPED_TRAPDOOR;
     public final static Material DRINK_DISPENSER = Material.BROWN_STAINED_GLASS;
@@ -50,8 +55,11 @@ public class Interactions implements Listener {
                 } else if (clickedBlockType == GRILL) {
                     player.sendMessage("grill");
                     Grill.placeMeat(player, clickedBlock);
-                } else if (clickedBlockType == GRILL_RAW_MEAT) {
+                } else if (clickedBlockType == DEEP_FRYER) {
+                    DeepFryer.startFries(clickedBlock);
+                } else if (clickedBlockType == FINISHED_DEEP_FRYER) {
 
+                    DeepFryer.takeFries(player, clickedBlock);
                 } else if (clickedBlockType == GRILL_COOKED_MEAT) {
                     Grill.takeCookedMeat(player, clickedBlock);
                 } else if (clickedBlockType == GRILL_BURNED_MEAT) {

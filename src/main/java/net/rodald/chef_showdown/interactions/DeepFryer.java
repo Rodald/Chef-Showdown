@@ -17,31 +17,29 @@ public class DeepFryer {
         this.plugin = plugin;
     }
 
-    public static void startFries(Player player, Block deepFryer) {
-        if (player.getInventory().getItemInMainHand().getType() == Material.BEEF) {
-            player.getInventory().setItemInMainHand(new ItemStack(Material.AIR));
-            deepFryer.setType(Material.RED_STAINED_GLASS);
+    public static void startFries(Block deepFryer) {
+        deepFryer.setType(Material.RED_STAINED_GLASS);
 
-            // Start the cooking timer
-            new BukkitRunnable() {
-                @Override
-                public void run() {
-                    if (deepFryer.getType() == Material.PURPUR_SLAB) {
-                        deepFryer.setType(Material.ORANGE_STAINED_GLASS);
+        // Start the cooking timer
+        new BukkitRunnable() {
+            @Override
+            public void run() {
+                if (deepFryer.getType() == Material.PURPUR_SLAB) {
+                    deepFryer.setType(Material.ORANGE_STAINED_GLASS);
 
-                        // Start the burning timer
-                        new BukkitRunnable() {
-                            @Override
-                            public void run() {
-                                if (deepFryer.getType() == Material.MUD_BRICK_SLAB) {
-                                    deepFryer.setType(Material.BLACK_STAINED_GLASS);
-                                }
+                    // Start the burning timer
+                    new BukkitRunnable() {
+                        @Override
+                        public void run() {
+                            if (deepFryer.getType() == Material.MUD_BRICK_SLAB) {
+                                deepFryer.setType(Material.BLACK_STAINED_GLASS);
                             }
-                        }.runTaskLater(plugin, BURNING_TIME);
-                    }
+                        }
+                    }.runTaskLater(plugin, BURNING_TIME);
                 }
-            }.runTaskLater(plugin, COOKING_TIME);
-        }
+            }
+        }.runTaskLater(plugin, COOKING_TIME);
+
     }
 
     public static void takeFries(Player player, Block deepFryer) {
