@@ -8,7 +8,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitRunnable;
 
 public class DeepFryer {
-    private static final int COOKING_TIME = 200; // 10 seconds (20 ticks per second)
+    private static final int COOKING_TIME = 200; // 10 seconds
     private static final int BURNING_TIME = 400; // 20 seconds
 
     private static JavaPlugin plugin;
@@ -24,14 +24,14 @@ public class DeepFryer {
         new BukkitRunnable() {
             @Override
             public void run() {
-                if (deepFryer.getType() == Material.PURPUR_SLAB) {
+                if (deepFryer.getType() == Material.RED_STAINED_GLASS) {
                     deepFryer.setType(Material.ORANGE_STAINED_GLASS);
 
                     // Start the burning timer
                     new BukkitRunnable() {
                         @Override
                         public void run() {
-                            if (deepFryer.getType() == Material.MUD_BRICK_SLAB) {
+                            if (deepFryer.getType() == Material.ORANGE_STAINED_GLASS) {
                                 deepFryer.setType(Material.BLACK_STAINED_GLASS);
                             }
                         }
