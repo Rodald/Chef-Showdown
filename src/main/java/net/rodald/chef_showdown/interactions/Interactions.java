@@ -58,8 +58,9 @@ public class Interactions implements Listener {
                 } else if (clickedBlockType == DEEP_FRYER) {
                     DeepFryer.startFries(clickedBlock);
                 } else if (clickedBlockType == FINISHED_DEEP_FRYER) {
-
                     DeepFryer.takeFries(player, clickedBlock);
+                } else if (clickedBlockType == BURNED_DEEP_FRYER) {
+                    DeepFryer.takeBurnedFries(player, clickedBlock);
                 } else if (clickedBlockType == GRILL_COOKED_MEAT) {
                     Grill.takeCookedMeat(player, clickedBlock);
                 } else if (clickedBlockType == GRILL_BURNED_MEAT) {
