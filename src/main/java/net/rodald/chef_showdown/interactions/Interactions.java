@@ -28,16 +28,13 @@ public class Interactions implements Listener {
     public final static Material SALAD = Material.WARPED_TRAPDOOR;
     public final static Material DRINK_DISPENSER = Material.BROWN_STAINED_GLASS;
     public final static Material TRASH_CAN = Material.CAULDRON;
-
     public static boolean isMainSlotEmpty(Player player) {
         return player.getInventory().getItemInMainHand().getType() == Material.AIR;
     }
-
+    
     @EventHandler
     public void onPlayerInteract(PlayerInteractEvent event) {
-
         if(event.getHand() != EquipmentSlot.HAND) return;
-
         // Check if the action is right-clicking a block
         if (event.getAction() == Action.RIGHT_CLICK_BLOCK) {
             // Check if the clicked block is of a specific type
@@ -81,5 +78,4 @@ public class Interactions implements Listener {
             }
         }
     }
-
 }
