@@ -13,7 +13,7 @@ public class DrinkDispenser {
 
     private static JavaPlugin plugin;
 
-    public DeepFryer(JavaPlugin plugin) {
+    public DrinkDispenser(JavaPlugin plugin) {
         this.plugin = plugin;
     }
 

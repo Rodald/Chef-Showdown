@@ -40,8 +40,16 @@ public class Interactions implements Listener {
             // Check if the clicked block is of a specific type
             if (event.getClickedBlock() != null) {
                 Player player = event.getPlayer();
-                Material clickedBlockType = event.getClickedBlock().getType();
                 Block clickedBlock = event.getClickedBlock();
+                int test = 2;
+                test = 4;
+                Material clickedBlockType = clickedBlock.getType();
+                if (clickedBlockType == Material.IRON_DOOR) {
+                    clickedBlock = player.getWorld().getBlockAt(clickedBlock.getLocation().clone().subtract(0, 0, 1));
+                    clickedBlockType = clickedBlock.getType();
+                    player.sendMessage("iron_door");
+                    player.sendMessage(clickedBlockType.toString());
+                }
                 if (clickedBlockType == TABLET) {
                     Tablet.swapItem(player, clickedBlock);
                     event.setCancelled(true);
