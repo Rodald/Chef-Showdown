@@ -8,51 +8,34 @@ import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitRunnable;
 
 public class DrinkDispenser {
-    private static final int COOKING_TIME = 200; // 10 seconds
-    private static final int BURNING_TIME = 400; // 20 seconds
-
+    
+    private static final int COOKING_TIME = 200;
+    
     private static JavaPlugin plugin;
 
     public DrinkDispenser(JavaPlugin plugin) {
         this.plugin = plugin;
     }
 
-    public static void startFries(Block deepFryer) {
-        deepFryer.setType(Material.RED_STAINED_GLASS);
+    public static void startDrink(Block drinkDispenser) {
+        drinkDispenser.setType(Material.RED_STAINED_GLASS); // cooking block
 
         // Start the cooking timer
         new BukkitRunnable() {
             @Override
             public void run() {
-                if (deepFryer.getType() == Material.RED_STAINED_GLASS) {
-                    deepFryer.setType(Material.ORANGE_STAINED_GLASS);
-
-                    // Start the burning timer
-                    new BukkitRunnable() {
-                        @Override
-                        public void run() {
-                            if (deepFryer.getType() == Material.ORANGE_STAINED_GLASS) {
-                                deepFryer.setType(Material.BLACK_STAINED_GLASS);
-                            }
-                        }
-                    }.runTaskLater(plugin, BURNING_TIME);
+                if (drinkDispenser.getType() == Material.RED_STAINED_GLASS) { // cooking block
+                    drinkDispenser.setType(Material.ORANGE_STAINED_GLASS); // drink block
                 }
             }
         }.runTaskLater(plugin, COOKING_TIME);
 
     }
 
-    public static void takeFries(Player player, Block deepFryer) {
+    public static void takeDrink(Player player, Block drinkDispenser) {
         if (Interactions.isMainSlotEmpty(player)) {
-            player.getInventory().setItemInMainHand(new ItemStack(Material.BAKED_POTATO));
-            deepFryer.setType(Material.YELLOW_STAINED_GLASS);
-        }
-    }
-
-    public static void takeBurnedFries(Player player, Block deepFryer) {
-        if (Interactions.isMainSlotEmpty(player)) {
-            player.getInventory().setItemInMainHand(new ItemStack(Material.POISONOUS_POTATO));
-            deepFryer.setType(Material.YELLOW_STAINED_GLASS);
+            player.getInventory().setItemInMainHand(new ItemStack(Material.POTION));
+            drinkDispenser.setType(Material.YELLOW_STAINED_GLASS); // normal block
         }
     }
 }
