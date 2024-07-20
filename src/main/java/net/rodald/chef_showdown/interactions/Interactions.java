@@ -27,6 +27,7 @@ public class Interactions implements Listener {
     public final static Material BURGER = Material.BAMBOO_TRAPDOOR;
     public final static Material SALAD = Material.WARPED_TRAPDOOR;
     public final static Material DRINK_DISPENSER = Material.BROWN_STAINED_GLASS;
+    public final static Material DRINK_DISPENSER_READY = Material.BROWN_STAINED_GLASS; // add drinkDispenser ready
     public final static Material TRASH_CAN = Material.CAULDRON;
     public static boolean isMainSlotEmpty(Player player) {
         return player.getInventory().getItemInMainHand().getType() == Material.AIR;
@@ -77,7 +78,11 @@ public class Interactions implements Listener {
                     SaladBoard.givePlayerSalad(player);
                     event.setCancelled(true);
                 } else if (clickedBlockType == DRINK_DISPENSER) {
-
+                    DrinkDispenser.startDrink(player, clickedBlock);
+                    event.setCancelled(true);
+                } else if (clickedBlockType == DRINK_DISPENSER_READY) {
+                    DrinkDispenser.takeDrink(player, clickedBlock);
+                    event.setCancelled(true);
                 } else if (clickedBlockType == TRASH_CAN) {
                     TrashCan.deleteItem(player);
                     event.setCancelled(true);
