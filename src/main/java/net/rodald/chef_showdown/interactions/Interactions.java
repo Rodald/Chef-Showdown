@@ -23,16 +23,16 @@ public class Interactions implements Listener {
     public final static Material FRYING_DEEP_FRYER = Material.RED_STAINED_GLASS;
     public final static Material FINISHED_DEEP_FRYER = Material.ORANGE_STAINED_GLASS;
     public final static Material BURNED_DEEP_FRYER = Material.BLACK_STAINED_GLASS;
-
     public final static Material BURGER = Material.BAMBOO_TRAPDOOR;
     public final static Material SALAD = Material.WARPED_TRAPDOOR;
     public final static Material DRINK_DISPENSER = Material.BROWN_STAINED_GLASS;
     public final static Material DRINK_DISPENSER_READY = Material.BROWN_STAINED_GLASS; // add drinkDispenser ready
     public final static Material TRASH_CAN = Material.CAULDRON;
+    public final static Material KETCHUP = Material.REDSTONE_TORCH;
+    public final static Material MAYO = Material.TORCH;
     public static boolean isMainSlotEmpty(Player player) {
         return player.getInventory().getItemInMainHand().getType() == Material.AIR;
     }
-    
     @EventHandler
     public void onPlayerInteract(PlayerInteractEvent event) {
         if(event.getHand() != EquipmentSlot.HAND) return;
@@ -78,13 +78,19 @@ public class Interactions implements Listener {
                     SaladBoard.givePlayerSalad(player);
                     event.setCancelled(true);
                 } else if (clickedBlockType == DRINK_DISPENSER) {
-                    DrinkDispenser.startDrink(player, clickedBlock);
+                    DrinkDispenser.startDrink(clickedBlock);
                     event.setCancelled(true);
                 } else if (clickedBlockType == DRINK_DISPENSER_READY) {
                     DrinkDispenser.takeDrink(player, clickedBlock);
                     event.setCancelled(true);
                 } else if (clickedBlockType == TRASH_CAN) {
                     TrashCan.deleteItem(player);
+                    event.setCancelled(true);
+                } else if (clickedBlockType == KETCHUP) {
+                    Sauces.addKetchup(player);
+                    event.setCancelled(true);
+                } else if (clickedBlockType == MAYO) {
+                    Sauces.addMayo(player);
                     event.setCancelled(true);
                 }
 
