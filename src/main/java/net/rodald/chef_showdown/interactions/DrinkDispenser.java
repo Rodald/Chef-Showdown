@@ -19,7 +19,6 @@ public class DrinkDispenser {
 
     public static void startDrink(Block drinkDispenser) {
         drinkDispenser.setType(Material.RED_STAINED_GLASS); // cooking block
-
         // Start the cooking timer
         new BukkitRunnable() {
             @Override
