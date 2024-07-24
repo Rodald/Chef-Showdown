@@ -17,18 +17,19 @@ public class Order {
         }
         World world = location.getWorld();
         ItemDisplay speechBubble = (ItemDisplay) world.spawnEntity(location, EntityType.ITEM_DISPLAY);
-        switch (orderSize) {
-            case 1: speechBubble.setItemStack(new ItemStack(Material.SMALL_AMETHYST_BUD));
-                break;
-            case 2: speechBubble.setItemStack(new ItemStack(Material.MEDIUM_AMETHYST_BUD));
-                break;
-            case 3: speechBubble.setItemStack(new ItemStack(Material.LARGE_AMETHYST_BUD));
-                break;
-            case 4: speechBubble.setItemStack(new ItemStack(Material.AMETHYST_CLUSTER));
-                break;
+
+        speechBubble.setItemStack(new ItemStack(Material.SMALL_AMETHYST_BUD));
+
+        for (int i = 0; i < order.length; i++) {
+            generateItem(location.clone().add(i*0.75, 0, 0.06), order[i]);
+            if (i > 0 && i < order.length) {
+                ItemDisplay speechBubbleMiddle = (ItemDisplay) world.spawnEntity(location.clone().add(i*.75, 0, 0), EntityType.ITEM_DISPLAY);
+                speechBubbleMiddle.setItemStack(new ItemStack(Material.LARGE_AMETHYST_BUD));
+            }
+
         }
-        Transformation speechBubbleTransformation = speechBubble.getTransformation();
-        generateItem(location.add(0, 0, 0.1), Material.GOLDEN_APPLE);
+        ItemDisplay speechBubbleEnd = (ItemDisplay) world.spawnEntity(location.clone().add(order.length*.75, 0, 0), EntityType.ITEM_DISPLAY);
+        speechBubbleEnd.setItemStack(new ItemStack(Material.MEDIUM_AMETHYST_BUD));
     }
 
     private static void generateItem(Location location, Material material) {
@@ -37,7 +38,18 @@ public class Order {
         Transformation orderTransformation = order.getTransformation();
         order.setItemStack(new ItemStack(material));
         orderTransformation.getScale().set(1, 1, 0.062);
-        orderTransformation.getRightRotation().set(0.3957091f, 0, -0.2706716f, 0.8775826f );
+        if (material == Material.GOLDEN_APPLE) {
+            orderTransformation.getRightRotation().set(0.13f, 0.02f, -0.16f,0.98f );
+            orderTransformation.getTranslation().add(0.1f, 0.3f, 0.0f);
+        } else if (material == Material.BEEF || material == Material.COOKED_BEEF) {
+            orderTransformation.getRightRotation().set(0.13f, 0.02f, -0.16f,0.98f );
+        } else if (material == Material.DRIED_KELP) {
+            orderTransformation.getRightRotation().set(0.10f, 0.03f, 0.01f,0.99f );
+            orderTransformation.getTranslation().add(0.0f, 0.3f, 0.0f);
+        } else {
+            orderTransformation.getScale().set(.55f, .55f, .062f);
+            orderTransformation.getTranslation().add(0.0f, 0.0625f, 0.0f);
+        }
         order.setTransformation(orderTransformation);
     }
 }
