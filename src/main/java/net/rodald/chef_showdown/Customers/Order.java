@@ -37,11 +37,12 @@ public class Order {
         ItemDisplay order = (ItemDisplay) world.spawnEntity(location, EntityType.ITEM_DISPLAY);
         Transformation orderTransformation = order.getTransformation();
         order.setItemStack(new ItemStack(material));
+        
         orderTransformation.getScale().set(1, 1, 0.062);
         if (material == Material.GOLDEN_APPLE) {
             orderTransformation.getRightRotation().set(0.13f, 0.02f, -0.16f,0.98f );
             orderTransformation.getTranslation().add(0.1f, 0.3f, 0.0f);
-        } else if (material == Material.BEEF || material == Material.COOKED_BEEF) {
+        } else if (material == Material.BEEF || material == Material.COOKED_BEEF || material == Material.COAL) {
             orderTransformation.getRightRotation().set(0.13f, 0.02f, -0.16f,0.98f );
         } else if (material == Material.DRIED_KELP) {
             orderTransformation.getScale().set(.75f, .75f, .062f);
@@ -51,6 +52,7 @@ public class Order {
             orderTransformation.getScale().set(.8, 0.062, .8);
             orderTransformation.getTranslation().add(0.0f, 0.08f, 0.01f);
         } else {
+            orderTransformation.getRightRotation().set(0, 1, 0, 0);
             orderTransformation.getScale().set(.55f, .55f, .062f);
             orderTransformation.getTranslation().add(0.0f, 0.0625f, 0.0f);
         }
