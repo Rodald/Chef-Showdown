@@ -1,5 +1,6 @@
 package net.rodald.chef_showdown.gui;
 
+import com.destroystokyo.paper.Title;
 import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -9,7 +10,8 @@ import java.util.Random;
 
 public class LoadingBar {
     private JavaPlugin plugin;
-    private static final String FONT_NAME = "minecraft:loading_bar"; // Hier der Name der Schriftart
+    private static final String FONT_NAME = "minecraft:loading_bar";
+    private static final String LOADING_CHARS = "\uE100\uE101\uE102\uE103\uE104\uE105\uE106\uE107\uE108\uE109\uE110\uE111\uE112\uE113\uE114\uE115\uE116\uE117\uE118\uE119\uE120\uE121\uE122\uE123\uE124\uE125\uE126\uE127\uE128\uE129\uE130\uE131\uE132\uE133\uE134\uE135\uE136\uE137\uE138\uE139\uE140\uE141\uE142\uE143\uE144\uE145\uE146\uE147\uE148\uE149\uE150\uE151\uE152\uE153\uE154\uE155\uE156\uE157\uE158\uE159\uE160\uE161\uE162\uE163\uE164\uE165\uE166\uE167\uE168\uE169\uE170\uE171\uE172\uE173\uE174\uE175\uE176\uE177\uE178\uE179\uE180\uE181\uE182\uE183\uE184\uE185\uE186\uE187\uE188\uE189\uE190\uE191\uE192\uE193\uE194\uE195\uE196\uE197\uE198\uE199\uE200";
 
     public LoadingBar(JavaPlugin plugin) {
         this.plugin = plugin;
@@ -27,21 +29,18 @@ public class LoadingBar {
                     return;
                 }
 
-                /*// Simulate random stops in the loading progress
-                if (random.nextInt(10) < 2) { // 20% chance to "stick"
+                if (random.nextInt(10) < 2) { // 20% chance to "stick" loading bar
                     return;
-                }*/
+                }
 
-                // Dynamically construct the message based on the percent
                 String message = getProgressChar(percent);
 
-                // Create the TextComponent with the message and custom font
                 TextComponent component = new TextComponent(message);
+                TextComponent black = new TextComponent("\uE014");
                 component.setFont(FONT_NAME);
 
-                // Send the action bar message to the player
-                player.sendMessage(percent + ": " + getProgressChar(percent));
-                player.spigot().sendMessage(component);
+                //player.sendTitle(" ", String.valueOf(component.getText()), 1, 1, 1);
+                player.sendTitle(new Title(component, black, 0, 20, 40));
 
                 percent++;
             }
@@ -49,7 +48,6 @@ public class LoadingBar {
     }
 
     private String getProgressChar(int percent) {
-        // Convert the percent to the corresponding Unicode escape sequence
-        return new String(Character.toChars(0xE100 + percent));
+        return String.valueOf(LOADING_CHARS.charAt(percent));
     }
 }
