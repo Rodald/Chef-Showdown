@@ -47,10 +47,10 @@ public class NPC {
                     double newY = lastLocation.getY() + ratio * dy;
                     double newZ = lastLocation.getZ() + ratio * dz;
                     Location stepLocation = new Location(lastLocation.getWorld(), newX, newY, newZ);
-                    villager.teleport(stepLocation);
+                    villager.teleport(stepLocation.clone().add(.5, 0, .5));
                     lastLocation = stepLocation;
                 } else {
-                    villager.teleport(nextLocation);
+                    villager.teleport(nextLocation.clone().add(.5, 0, .5));
                     lastLocation = nextLocation;
                     pathIndex++;
                 }
