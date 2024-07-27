@@ -40,14 +40,18 @@ public class NPC {
                 double dz = nextLocation.getZ() - lastLocation.getZ();
                 double distance = Math.sqrt(dx * dx + dy * dy + dz * dz);
 
-                // Move in small steps
                 if (distance > stepSize) {
                     double ratio = stepSize / distance;
                     double newX = lastLocation.getX() + ratio * dx;
                     double newY = lastLocation.getY() + ratio * dy;
                     double newZ = lastLocation.getZ() + ratio * dz;
                     Location stepLocation = new Location(lastLocation.getWorld(), newX, newY, newZ);
+
+                    // Set the Villager's yaw to face the direction of movement
+                    float yaw = (float) Math.toDegrees(Math.atan2(dz, dx)) - 90;
+                    stepLocation.setYaw(yaw);
                     villager.teleport(stepLocation.clone().add(.5, 0, .5));
+
                     lastLocation = stepLocation;
                 } else {
                     villager.teleport(nextLocation.clone().add(.5, 0, .5));
@@ -119,7 +123,7 @@ public class NPC {
 
     private boolean isWalkable(Location location) {
         Material type = location.getBlock().getType();
-        return type == Material.AIR || type == Material.LIGHT || type == Material.BARRIER;
+        return type == Material.AIR || type == Material.LIGHT;
     }
 
     private double heuristic(Location start, Location end) {
