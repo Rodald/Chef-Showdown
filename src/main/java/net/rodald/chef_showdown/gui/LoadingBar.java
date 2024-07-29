@@ -30,7 +30,7 @@ public class LoadingBar {
                     return;
                 }
 
-                if (random.nextInt(10) < 2) { // 20% chance to "stick" loading bar
+                if (random.nextInt(10) < 3) { // 20% chance to "stick" loading bar
                     return;
                 }
 
