@@ -7,10 +7,9 @@ import org.bukkit.entity.EntityType;
 import org.bukkit.entity.ItemDisplay;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.util.Transformation;
-import org.joml.AxisAngle4f;
-import org.joml.Vector3f;
 
 public class Order {
+    private final static int MAX_ORDER_POINTS = 5;
     public static void generateDisplay(Location location, int orderSize, Material[] order) {
         if (orderSize <= 0 || orderSize >= 5) {
             return;
@@ -57,5 +56,9 @@ public class Order {
             orderTransformation.getTranslation().add(0.0f, 0.0625f, 0.0f);
         }
         order.setTransformation(orderTransformation);
+    }
+
+    private static Material[] generateRandomOrder() {
+        return null;
     }
 }
