@@ -8,6 +8,8 @@ import org.bukkit.entity.ItemDisplay;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.util.Transformation;
 
+import java.util.Random;
+
 public class Order {
     private final static int MAX_ORDER_POINTS = 5;
     public static void generateDisplay(Location location, int orderSize, Material[] order) {
@@ -59,6 +61,9 @@ public class Order {
     }
 
     private static Material[] generateRandomOrder() {
+
+        Random random = new Random();
+        int orderNumber = random.nextInt(MAX_ORDER_POINTS);
         return null;
     }
 }
