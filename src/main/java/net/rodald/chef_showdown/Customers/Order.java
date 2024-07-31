@@ -3,26 +3,52 @@ package net.rodald.chef_showdown.Customers;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.ItemDisplay;
+import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
+import org.bukkit.event.entity.EntityInteractEvent;
+import org.bukkit.event.player.PlayerInteractEntityEvent;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.metadata.FixedMetadataValue;
+import org.bukkit.metadata.MetadataValue;
+import org.bukkit.plugin.Plugin;
 import org.bukkit.util.Transformation;
 
-import java.util.Random;
+import java.util.*;
 
-public class Order {
-    private final static int MAX_ORDER_POINTS = 5;
-    public static void generateDisplay(Location location, int orderSize, Material[] order) {
-        if (orderSize <= 0 || orderSize >= 5) {
-            return;
-        }
+public class Order implements Listener {
+    private final static int MAX_ORDER_POINTS = 8;
+    private static Plugin plugin;
+    private static final Map<Material, Integer> orderMap = new HashMap<>();
+    static {
+        orderMap.put(Material.GOLDEN_APPLE, 4);
+        orderMap.put(Material.BAKED_POTATO, 2);
+        orderMap.put(Material.COOKED_COD, 3);
+        orderMap.put(Material.COD, 3);
+    }
+    private static final String ORDER_METADATA_KEY = "orderList";
+
+    public Order(Plugin plugin) {
+        Order.plugin = plugin;
+    }
+
+    public static Material[] generateDisplay(Entity entity) {
+        Material[] randomOrder = generateRandomOrder();
+        entity.setMetadata(ORDER_METADATA_KEY, new FixedMetadataValue(plugin, randomOrder));
+        generateDisplay(entity.getLocation().clone().add(.25, entity.getHeight() + .6, 0), randomOrder); // Hier wird die Display-Logik aufgerufen
+        return randomOrder;
+    }
+    public static void generateDisplay(Location location, Material[] order) {
         World world = location.getWorld();
         ItemDisplay speechBubble = (ItemDisplay) world.spawnEntity(location, EntityType.ITEM_DISPLAY);
 
         speechBubble.setItemStack(new ItemStack(Material.SMALL_AMETHYST_BUD));
 
         for (int i = 0; i < order.length; i++) {
-            generateItem(location.clone().add(i*0.75 - 0.05, 0, 0.06), order[i]);
+            generateItem(location.clone().add(i*.75 - .05, 0, .06), order[i]);
             if (i > 0 && i < order.length) {
                 ItemDisplay speechBubbleMiddle = (ItemDisplay) world.spawnEntity(location.clone().add(i*.75, 0, 0), EntityType.ITEM_DISPLAY);
                 speechBubbleMiddle.setItemStack(new ItemStack(Material.LARGE_AMETHYST_BUD));
@@ -61,9 +87,46 @@ public class Order {
     }
 
     private static Material[] generateRandomOrder() {
+        int randomOrderValue = 0;
+        List orderList = new ArrayList<Material>();
 
         Random random = new Random();
-        int orderNumber = random.nextInt(MAX_ORDER_POINTS);
-        return null;
+        while (randomOrderValue < MAX_ORDER_POINTS) {
+            List<Material> keysArray = new ArrayList<Material>(orderMap.keySet());
+            Material randomOrder = keysArray.get(random.nextInt(keysArray.size()));
+            int orderValue = orderMap.get(randomOrder);
+            if (randomOrderValue + orderValue >= MAX_ORDER_POINTS) {
+                break;
+            }
+            randomOrderValue += orderValue;
+            orderList.add(randomOrder);
+        }
+        return (Material[]) orderList.toArray(new Material[orderList.size()]);
+    }
+
+    @EventHandler
+    public void onEntityInteract(PlayerInteractEntityEvent event) {
+        Entity entity = event.getRightClicked();
+        Player player = event.getPlayer();
+        ItemStack itemInHand = player.getInventory().getItemInMainHand();
+
+        if (entity.hasMetadata(ORDER_METADATA_KEY)) {
+            List<MetadataValue> metadataValues = entity.getMetadata(ORDER_METADATA_KEY);
+            Material[] orderList = (Material[]) metadataValues.get(0).value();
+            Material itemType = itemInHand.getType();
+
+            if (Arrays.asList(orderList).contains(itemType)) {
+                orderList = Arrays.stream(orderList)
+                        .filter(material -> !material.equals(itemType))
+                        .toArray(Material[]::new);
+
+                if (orderList.length == 0) {
+                    player.sendMessage("All items collected!");
+                    entity.remove();
+                } else {
+                    entity.setMetadata(ORDER_METADATA_KEY, new FixedMetadataValue(plugin, orderList));
+                }
+            }
+        }
     }
 }
