@@ -109,16 +109,21 @@ public class Order implements Listener {
         Entity entity = event.getRightClicked();
         Player player = event.getPlayer();
         ItemStack itemInHand = player.getInventory().getItemInMainHand();
+        Material itemType = itemInHand.getType();
 
         if (entity.hasMetadata(ORDER_METADATA_KEY)) {
             List<MetadataValue> metadataValues = entity.getMetadata(ORDER_METADATA_KEY);
             Material[] orderList = (Material[]) metadataValues.get(0).value();
-            Material itemType = itemInHand.getType();
 
-            if (Arrays.asList(orderList).contains(itemType)) {
-                orderList = Arrays.stream(orderList)
-                        .filter(material -> !material.equals(itemType))
-                        .toArray(Material[]::new);
+            // Erstellen einer Liste aus dem Array, um eine Mutation zu ermöglichen
+            List<Material> orderListMutable = new ArrayList<>(Arrays.asList(orderList));
+
+            if (orderListMutable.contains(itemType)) {
+                // Nur ein Vorkommen des Items entfernen
+                orderListMutable.remove(itemType);
+
+                // Neues Array aus der mutierten Liste erstellen
+                orderList = orderListMutable.toArray(new Material[0]);
 
                 if (orderList.length == 0) {
                     player.sendMessage("All items collected!");
@@ -126,6 +131,9 @@ public class Order implements Listener {
                 } else {
                     entity.setMetadata(ORDER_METADATA_KEY, new FixedMetadataValue(plugin, orderList));
                 }
+
+                // Das Item in der Hand des Spielers löschen
+                player.getInventory().setItemInMainHand(new ItemStack(Material.AIR));
             }
         }
     }
