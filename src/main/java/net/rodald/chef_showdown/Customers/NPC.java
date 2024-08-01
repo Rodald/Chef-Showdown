@@ -1,8 +1,10 @@
 package net.rodald.chef_showdown.Customers;
 
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
-import org.bukkit.entity.EntityType;
+import org.bukkit.entity.Entity;
+import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Villager;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -11,24 +13,38 @@ import java.util.*;
 
 public class NPC {
     private JavaPlugin plugin;
+    public static final Location OUTSIDE = new Location(Bukkit.getWorld("world"),317, 124, 95);
+    public static final Location CASH_REGISTER = new Location(Bukkit.getWorld("world"), 306, 124, 115);
 
     public NPC(JavaPlugin plugin) {
         this.plugin = plugin;
     }
 
-    public void spawnNPC(Location start, Location end) {
-        Villager villager = (Villager) start.getWorld().spawnEntity(start, EntityType.VILLAGER);
-
+    public void walkNPC(LivingEntity entity, Location end) {
+        Location start = entity.getLocation();
+        // avoids crashes
+        if (start.getY() != end.getY()) {
+            start.setY(end.getY());
+        }
+        entity.setAI(true);
         new BukkitRunnable() {
             private final List<Location> path = findPath(start, end);
             private int pathIndex = 0;
             private Location lastLocation = start.clone();
-            private double stepSize = 0.1; // Adjusted to make the movement even smoother
+            private double stepSize = 0.2; // Adjusted to make the movement even smoother
 
             @Override
             public void run() {
                 if (pathIndex >= path.size()) {
                     this.cancel();
+                    Bukkit.broadcastMessage("Customer reached his destination!");
+                    if (end == NPC.OUTSIDE) {
+                        entity.remove();
+                    } else if (end.distance(CASH_REGISTER) <= 2) {
+                        entity.setAI(false);
+                        entity.setRotation(0, 0);
+                        Order.generateDisplay(entity);
+                    }
                     return;
                 }
 
@@ -50,11 +66,12 @@ public class NPC {
                     // Set the Villager's yaw to face the direction of movement
                     float yaw = (float) Math.toDegrees(Math.atan2(dz, dx)) - 90;
                     stepLocation.setYaw(yaw);
-                    villager.teleport(stepLocation.clone().add(.5, 0, .5));
+                    nextLocation.setYaw(yaw);
+                    entity.teleport(stepLocation.clone().add(.5, 0, .5));
 
                     lastLocation = stepLocation;
                 } else {
-                    villager.teleport(nextLocation.clone().add(.5, 0, .5));
+                    entity.teleport(nextLocation.clone().add(.5, 0, .5));
                     lastLocation = nextLocation;
                     pathIndex++;
                 }
@@ -123,7 +140,7 @@ public class NPC {
 
     private boolean isWalkable(Location location) {
         Material type = location.getBlock().getType();
-        return type == Material.AIR || type == Material.LIGHT;
+        return type == Material.AIR || type == Material.LIGHT || type == Material.BARRIER;
     }
 
     private double heuristic(Location start, Location end) {

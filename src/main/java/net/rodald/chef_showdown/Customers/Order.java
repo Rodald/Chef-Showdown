@@ -3,25 +3,21 @@ package net.rodald.chef_showdown.Customers;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
-import org.bukkit.entity.Entity;
-import org.bukkit.entity.EntityType;
-import org.bukkit.entity.ItemDisplay;
-import org.bukkit.entity.Player;
+import org.bukkit.entity.*;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
-import org.bukkit.event.entity.EntityInteractEvent;
 import org.bukkit.event.player.PlayerInteractEntityEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.metadata.MetadataValue;
-import org.bukkit.plugin.Plugin;
+import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.util.Transformation;
 
 import java.util.*;
 
 public class Order implements Listener {
     private final static int MAX_ORDER_POINTS = 8;
-    private static Plugin plugin;
+    private static JavaPlugin plugin;
     private static final Map<Material, Integer> orderMap = new HashMap<>();
     static {
         orderMap.put(Material.GOLDEN_APPLE, 4);
@@ -31,7 +27,7 @@ public class Order implements Listener {
     }
     private static final String ORDER_METADATA_KEY = "orderList";
 
-    public Order(Plugin plugin) {
+    public Order(JavaPlugin plugin) {
         Order.plugin = plugin;
     }
 
@@ -127,7 +123,8 @@ public class Order implements Listener {
 
                 if (orderList.length == 0) {
                     player.sendMessage("All items collected!");
-                    entity.remove();
+                    player.sendMessage("World:" + player.getWorld().getName());
+                    new NPC(plugin).walkNPC((LivingEntity) entity, NPC.OUTSIDE);
                 } else {
                     entity.setMetadata(ORDER_METADATA_KEY, new FixedMetadataValue(plugin, orderList));
                 }
