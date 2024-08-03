@@ -1,7 +1,13 @@
 package net.rodald.chef_showdown.interactions;
 
+import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
+import org.bukkit.block.BlockFace;
+import org.bukkit.block.BlockState;
+import org.bukkit.block.data.BlockData;
+import org.bukkit.block.data.Directional;
+import org.bukkit.block.data.Rotatable;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -19,10 +25,37 @@ public class Interactions implements Listener {
     public final static Material GRILL_COOKED_MEAT = Material.MUD_BRICK_SLAB;
     public final static Material GRILL_BURNED_MEAT = Material.BLACKSTONE_SLAB;
 
-    public final static Material DEEP_FRYER = Material.YELLOW_STAINED_GLASS;
-    public final static Material FRYING_DEEP_FRYER = Material.RED_STAINED_GLASS;
-    public final static Material FINISHED_DEEP_FRYER = Material.ORANGE_STAINED_GLASS;
-    public final static Material BURNED_DEEP_FRYER = Material.BLACK_STAINED_GLASS;
+    public static final BlockData DEEP_FRYER;
+    static {
+
+        Material terracotta = Material.YELLOW_GLAZED_TERRACOTTA;
+        DEEP_FRYER = terracotta.createBlockData();
+        Directional rotation = (Directional) DEEP_FRYER;
+        rotation.setFacing(BlockFace.SOUTH);
+    }
+    public final static BlockData FRYING_DEEP_FRYER;
+    static {
+        Material terracotta = Material.RED_GLAZED_TERRACOTTA;
+        FRYING_DEEP_FRYER = terracotta.createBlockData();
+        Directional rotation = (Directional) DEEP_FRYER;
+        rotation.setFacing(BlockFace.SOUTH);
+    }
+    public final static BlockData FINISHED_DEEP_FRYER;
+    static {
+
+        Material terracotta = Material.ORANGE_GLAZED_TERRACOTTA;
+        FINISHED_DEEP_FRYER = terracotta.createBlockData();
+        Directional rotation = (Directional) DEEP_FRYER;
+        rotation.setFacing(BlockFace.SOUTH);
+    }
+    public final static BlockData BURNED_DEEP_FRYER;
+    static {
+
+        Material terracotta = Material.BLACK_GLAZED_TERRACOTTA;
+        BURNED_DEEP_FRYER = terracotta.createBlockData();
+        Directional rotation = (Directional) DEEP_FRYER;
+        rotation.setFacing(BlockFace.SOUTH);
+    }
     public final static Material BURGER = Material.BAMBOO_TRAPDOOR;
     public final static Material SALAD = Material.WARPED_TRAPDOOR;
     public final static Material DRINK_DISPENSER = Material.BROWN_STAINED_GLASS;
@@ -42,13 +75,12 @@ public class Interactions implements Listener {
             if (event.getClickedBlock() != null) {
                 Player player = event.getPlayer();
                 Block clickedBlock = event.getClickedBlock();
-                int test = 2;
-                test = 4;
+                player.sendMessage("test");
                 Material clickedBlockType = clickedBlock.getType();
+                BlockData clickedBlockData = clickedBlock.getBlockData();
                 if (clickedBlockType == Material.IRON_DOOR) {
                     clickedBlock = player.getWorld().getBlockAt(clickedBlock.getLocation().clone().subtract(0, 0, 1));
                     clickedBlockType = clickedBlock.getType();
-                    player.sendMessage("iron_door");
                     player.sendMessage(clickedBlockType.toString());
                 }
                 if (clickedBlockType == TABLET) {
@@ -56,16 +88,14 @@ public class Interactions implements Listener {
                     event.setCancelled(true);
                 } else if (clickedBlockType == MEAT) {
                     MeatBoard.givePlayerMeat(player);
-                    player.sendMessage("meat");
                     event.setCancelled(true);
                 } else if (clickedBlockType == GRILL) {
-                    player.sendMessage("grill");
                     Grill.placeMeat(player, clickedBlock);
-                } else if (clickedBlockType == DEEP_FRYER) {
+                } else if (clickedBlockType == DEEP_FRYER.getMaterial()) {
                     DeepFryer.startFries(clickedBlock);
-                } else if (clickedBlockType == FINISHED_DEEP_FRYER) {
+                } else if (clickedBlockType == FINISHED_DEEP_FRYER.getMaterial()) {
                     DeepFryer.takeFries(player, clickedBlock);
-                } else if (clickedBlockType == BURNED_DEEP_FRYER) {
+                } else if (clickedBlockType == BURNED_DEEP_FRYER.getMaterial()) {
                     DeepFryer.takeBurnedFries(player, clickedBlock);
                 } else if (clickedBlockType == GRILL_COOKED_MEAT) {
                     Grill.takeCookedMeat(player, clickedBlock);
