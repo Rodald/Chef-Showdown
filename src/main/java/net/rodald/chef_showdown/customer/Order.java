@@ -1,4 +1,4 @@
-package net.rodald.chef_showdown.Customers;
+package net.rodald.chef_showdown.customer;
 
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -24,6 +24,7 @@ public class Order implements Listener {
         orderMap.put(Material.BAKED_POTATO, 2);
         orderMap.put(Material.COOKED_COD, 3);
         orderMap.put(Material.COD, 3);
+        orderMap.put(Material.DRIED_KELP, 3);
     }
     private static final String ORDER_METADATA_KEY = "orderList";
 
@@ -70,6 +71,7 @@ public class Order implements Listener {
         } else if (material == Material.DRIED_KELP) {
             orderTransformation.getScale().set(.75f, .75f, .062f);
             orderTransformation.getRightRotation().set(0.10f, 0.03f, 0.01f,0.99f );
+            orderTransformation.getTranslation().add(0.0f, 0.25f, 0.0f);
         } else if (material == Material.BAKED_POTATO || material == Material.COD || material == Material.COOKED_COD) {
             orderTransformation.getLeftRotation().set(0.067031115f, 0.7039258f, 0.7038698f, 0.06754982f);
             orderTransformation.getScale().set(.8, 0.062, .8);
