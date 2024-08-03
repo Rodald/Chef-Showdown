@@ -3,13 +3,18 @@ package net.rodald.chef_showdown.customer;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
+import org.bukkit.event.entity.EntityDamageByBlockEvent;
+import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.*;
 
-public class NPC {
+public class NPC implements Listener {
     private JavaPlugin plugin;
     public static final Location OUTSIDE = new Location(Bukkit.getWorld("world"),317, 124, 95);
     public static final Location CASH_REGISTER = new Location(Bukkit.getWorld("world"), 306, 124, 115);
@@ -158,6 +163,14 @@ public class NPC {
 
         double getF() {
             return f;
+        }
+    }
+
+
+    @EventHandler
+    public static void EntityDamageEvent(EntityDamageEvent event) {
+        if (event.getEntity().getType() == EntityType.VILLAGER) {
+            event.setCancelled(true);
         }
     }
 }

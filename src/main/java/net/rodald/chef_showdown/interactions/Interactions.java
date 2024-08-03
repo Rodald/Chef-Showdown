@@ -37,7 +37,7 @@ public class Interactions implements Listener {
     static {
         Material terracotta = Material.RED_GLAZED_TERRACOTTA;
         FRYING_DEEP_FRYER = terracotta.createBlockData();
-        Directional rotation = (Directional) DEEP_FRYER;
+        Directional rotation = (Directional) FRYING_DEEP_FRYER;
         rotation.setFacing(BlockFace.SOUTH);
     }
     public final static BlockData FINISHED_DEEP_FRYER;
@@ -45,7 +45,7 @@ public class Interactions implements Listener {
 
         Material terracotta = Material.ORANGE_GLAZED_TERRACOTTA;
         FINISHED_DEEP_FRYER = terracotta.createBlockData();
-        Directional rotation = (Directional) DEEP_FRYER;
+        Directional rotation = (Directional) FINISHED_DEEP_FRYER;
         rotation.setFacing(BlockFace.SOUTH);
     }
     public final static BlockData BURNED_DEEP_FRYER;
@@ -53,7 +53,7 @@ public class Interactions implements Listener {
 
         Material terracotta = Material.BLACK_GLAZED_TERRACOTTA;
         BURNED_DEEP_FRYER = terracotta.createBlockData();
-        Directional rotation = (Directional) DEEP_FRYER;
+        Directional rotation = (Directional) BURNED_DEEP_FRYER;
         rotation.setFacing(BlockFace.SOUTH);
     }
     public final static Material BURGER = Material.BAMBOO_TRAPDOOR;
