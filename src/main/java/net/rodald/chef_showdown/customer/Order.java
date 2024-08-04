@@ -35,7 +35,7 @@ public class Order implements Listener {
     public static Material[] generateDisplay(Entity entity) {
         Material[] randomOrder = generateRandomOrder();
         entity.setMetadata(ORDER_METADATA_KEY, new FixedMetadataValue(plugin, randomOrder));
-        generateDisplay(entity.getLocation().clone().add(.25, entity.getHeight() + .6, 0), randomOrder); // Hier wird die Display-Logik aufgerufen
+        generateDisplay(entity.getLocation().clone().add(.25, entity.getHeight() + .6, 0), randomOrder);
         return randomOrder;
     }
     public static void generateDisplay(Location location, Material[] order) {
@@ -113,14 +113,11 @@ public class Order implements Listener {
             List<MetadataValue> metadataValues = entity.getMetadata(ORDER_METADATA_KEY);
             Material[] orderList = (Material[]) metadataValues.get(0).value();
 
-            // Erstellen einer Liste aus dem Array, um eine Mutation zu ermöglichen
             List<Material> orderListMutable = new ArrayList<>(Arrays.asList(orderList));
 
             if (orderListMutable.contains(itemType)) {
-                // Nur ein Vorkommen des Items entfernen
                 orderListMutable.remove(itemType);
 
-                // Neues Array aus der mutierten Liste erstellen
                 orderList = orderListMutable.toArray(new Material[0]);
 
                 if (orderList.length == 0) {
@@ -131,7 +128,6 @@ public class Order implements Listener {
                     entity.setMetadata(ORDER_METADATA_KEY, new FixedMetadataValue(plugin, orderList));
                 }
 
-                // Das Item in der Hand des Spielers löschen
                 player.getInventory().setItemInMainHand(new ItemStack(Material.AIR));
             }
         }

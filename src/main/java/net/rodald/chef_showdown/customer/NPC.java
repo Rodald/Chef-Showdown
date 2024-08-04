@@ -7,7 +7,6 @@ import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
-import org.bukkit.event.entity.EntityDamageByBlockEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -25,7 +24,7 @@ public class NPC implements Listener {
 
     public void walkNPC(LivingEntity entity, Location end) {
         Location start = entity.getLocation();
-        // avoids crashes
+        // avoids crashes by preventing impossible paths
         if (start.getY() != end.getY()) {
             start.setY(end.getY());
         }
@@ -34,7 +33,7 @@ public class NPC implements Listener {
             private final List<Location> path = findPath(start, end);
             private int pathIndex = 0;
             private Location lastLocation = start.clone();
-            private double stepSize = 0.2; // Adjusted to make the movement even smoother
+            private double stepSize = 0.2;
 
             @Override
             public void run() {
@@ -79,7 +78,7 @@ public class NPC implements Listener {
                     pathIndex++;
                 }
             }
-        }.runTaskTimer(plugin, 0, 1); // Move every tick (0.05 seconds)
+        }.runTaskTimer(plugin, 0, 1);
     }
 
     private List<Location> findPath(Location start, Location end) {

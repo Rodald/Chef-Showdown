@@ -30,7 +30,7 @@ public class LoadingBar {
                     return;
                 }
 
-                if (random.nextInt(100) < STICK_CHANCE) { // 20% chance to "stick" loading bar
+                if (random.nextInt(100) < STICK_CHANCE) {
                     return;
                 }
 
@@ -46,7 +46,7 @@ public class LoadingBar {
 
                 percent++;
             }
-        }.runTaskTimer(plugin, 0, 2); // Run every 2 ticks (0.1 seconds)
+        }.runTaskTimer(plugin, 0, 2);
     }
 
     private String getProgressChar(int percent) {
