@@ -12,8 +12,8 @@ public class Sauces {
             player.getInventory().setItemInMainHand(new ItemStack(Material.COOKED_COD));
         }
     }
-    // adds mayo
 
+    // adds mayo
     public static void addMayo(Player player) {
         if (player.getInventory().getItemInMainHand().getType() == Material.BAKED_POTATO) {
             player.getInventory().setItemInMainHand(new ItemStack(Material.COD));

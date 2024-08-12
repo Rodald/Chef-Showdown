@@ -10,6 +10,7 @@ import org.bukkit.entity.TextDisplay;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import java.util.Comparator;
 import java.util.Locale;
 import java.util.Optional;
 
@@ -18,7 +19,7 @@ public class Tablet {
     public static void swapItem(Player player, Block tablet) {
         ItemStack playerItem = player.getInventory().getItemInMainHand();
 
-        Optional<Entity> itemFrameEntity = tablet.getWorld().getNearbyEntities(tablet.getLocation(), 1, 1, 1).stream()
+        tablet.getWorld().getNearbyEntities(tablet.getLocation(), 1, 1, 1).stream()
                 .filter(entity -> entity instanceof ItemFrame)
                 .findFirst();
         Location tabletLocation = tablet.getLocation().toCenterLocation();
@@ -26,7 +27,7 @@ public class Tablet {
 
                 .filter(entity -> entity instanceof ItemFrame && !entity.equals(player))
                 .map(entity -> (ItemFrame) entity)
-                .min((entity1, entity2) -> Double.compare(tabletLocation.distance(entity1.getLocation()), tabletLocation.distance(entity2.getLocation())))
+                .min(Comparator.comparingDouble(entity -> tabletLocation.distance(entity.getLocation())))
                 .orElse(null);
 
             if (nearestItemFrame != null) {
